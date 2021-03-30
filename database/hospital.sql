@@ -123,11 +123,6 @@ CREATE TABLE `doctor` (
 -- Dumping data for table `doctor`
 --
 
--- INSERT INTO `doctor` (`did`, `dname`, `ddob`, `dgender`, `dspec`, `dphone`, `dmail`, `daddress`) VALUES
--- (1001, 'doc 1', '0056-12-31', 'Female', 'kjhgf', 1234567, 'doc1@gmail.com', 'ghfds'),
--- (1002, 'doc 2', '5678-12-31', 'Female', 'ghfd', 7654, 'doc2@gmail.com', 'asdfg'),
--- (1003, 'rtdgf', '0056-12-31', 'Male', 'ygv', 123456, 'yhgf@sdfg', 'hgf'),
--- (1004, 'ncvng', '0056-12-31', 'Male', 'uhgv', 987654, 'sdfg@efbn', 'jhgfd');
 
 -- --------------------------------------------------------
 
@@ -145,11 +140,7 @@ CREATE TABLE `doctorlogin` (
 -- Dumping data for table `doctorlogin`
 --
 
--- INSERT INTO `doctorlogin` (`did`, `dmail`, `dpass`) VALUES
--- (1001, 'doc1@gmail.com', 'doc1'),
--- (1002, 'doc2@gmail.com', 'doc 2'),
--- (1003, 'yhgf@sdfg', 'rtdgf'),
--- (1004, 'sdfg@efbn', 'ncvng');
+
 
 -- --------------------------------------------------------
 
@@ -168,9 +159,7 @@ CREATE TABLE `medicine` (
 -- Dumping data for table `medicine`
 --
 
--- INSERT INTO `medicine` (`mid`, `mname`, `mcost`, `mnum`) VALUES
--- (101, 'coldstop', 27.07, 10),
--- (102, 'tegrital', 654, 20);
+
 
 -- --------------------------------------------------------
 
