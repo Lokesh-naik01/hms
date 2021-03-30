@@ -1,0 +1,231 @@
+<?php include 'session.php' ?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="refresh" content="10">
+    <meta charset="utf-8">
+    <title>Appointments List</title>
+    <?php include 'style.php' ?>
+    <style>
+    .tab{
+      padding-left:100px;
+      padding-right:100px;
+    }
+    table,td{
+      border:1px solid black;
+      text-align:center;
+      background-color: #FFFAFA;
+    }
+    th{
+      border:1px solid black;
+      text-align:center;
+    }
+    .tab{
+      overflow:auto;
+    }
+    td a{
+      text-decoration: none;
+      background-color: orange;
+      font-weight: bold;
+      color: #fff;
+      border-radius: 3px;
+      padding: 5px;
+      text-align: center;
+    }
+    td a:hover{
+      color:black;
+    }
+    table tr th{
+      font-weight: bold;
+      background-color: black;
+    }
+      .tab1{
+        max-height: 577px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <?php include 'header.php' ?>
+    <div class="row2">
+      <?php include 'sidebar.php' ?>
+      <div class="column1 right1">
+
+          <div class="tab">
+            <form style="padding-top:15px"action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+             <input class="form-control" type="text" name="aid" placeholder="Enter Appointment ID or Patient Details">
+             <input class="btn btn-primary" id="register" style="background-color:black;color:white;margin-top:3px;" type="submit" name="pdet" value="Show Appointment Details">
+            </form>
+         <br>
+         <div class="tab1">
+           <?php
+             if(isset($_POST['pdet']))
+             {
+               $data=$_POST['aid'];
+               $dval=$_SESSION["docid"];
+               $adval=date("Y-m-d");
+               $conn=mysqli_connect("localhost","root","","hospital")or die("connection failed");
+               //$sql=" SELECT * FROM appointment WHERE did='$dval' AND adate='$adval' AND (WHERE pid='$data' OR pname LIKE '%".$data."%' )";
+               $sql=" SELECT * FROM appointment WHERE (did='$dval' AND adate<'$adval' AND (pid LIKE '%".$data."%' OR aid LIKE '%".$data."%' OR pname LIKE '%".$data."%')) ";
+               $result=mysqli_query($conn,$sql) or die("Query Unsuccessfull.". mysqli_error());
+               if(mysqli_num_rows($result) > 0)
+               {
+                 ?>
+                 <h1><center>Appointment Details</center></h1>
+                 <table class="table">
+                     <tr style="background-color:#343434;color:white;">
+                         <th>Appointment ID</th>
+                         <th>Patient ID</th>
+                         <th>Patient Name</th>
+                         <th>Doctor Name</th>
+                         <th>Date of Appointment</th>
+                         <th>Status</th>
+                         <th>Action</th>
+                     </tr>
+                     <?php
+                           while($row = mysqli_fetch_assoc($result) )
+                           {
+                      ?>
+                             <tr>
+                                   <td>   <?php echo $row['aid']; ?>        </td>
+                                   <td>   <?php echo $row['pid']; ?>      </td>
+                                   <td>   <?php echo $row['pname']; ?>       </td>
+                                   <td>   <?php echo $row['dname']; ?>    </td>
+                                   <td>   <?php echo $row['adate']; ?>    </td>
+                                   <?php
+                                   if($row['Status']=="No")
+                                   {?>
+                                     <td>   <?php echo "Patient Missed Appointment"; ?>    </td>
+                                     <td style="text-align:center;">
+                                            <a href="check.php?id=<?php echo $row['aid']; ?>">Check</a>
+                                     </td>
+                                    <?php
+                                   }
+                                   else {?>
+                                     <td>   <?php echo "Checked"; ?>    </td>
+                                     <td style="text-align:center;">
+                                            <a "href="view.php?id=<?php echo $row['aid']; ?>">View</a>
+                                     </td>
+                                     <?php
+                                   }
+                                    ?>
+                             </tr>
+                    <?php
+
+                           }
+                          // mysqli_close($conn);
+                    ?>
+                  </table>
+                 <?php
+                 mysqli_close($conn);
+               }
+               else
+               { ?>
+                 <h1><center>No Appointment with given ID</center></h1>
+                 <?php
+               }
+             }
+             else
+             {
+               ?>
+               <h1><center>Appointment Details</center></h1>
+               <?php
+                 $conn=mysqli_connect("localhost","root","","hospital")or die("connection failed");
+                 if(isset($_GET['pag']))
+                 {
+                   $pag=$_GET['pag'];
+                 }
+                 else
+                 {
+                   $pag=1;
+                 }
+                       $num_per_page=10;
+                       $start_from=($pag-1)*10;
+                       $dval=$_SESSION["docid"];
+                       $adval=date("Y-m-d");
+                       $sql=" SELECT * FROM appointment WHERE (did='$dval' AND adate<'$adval' ) ORDER BY aid DESC LIMIT $start_from,$num_per_page";
+                       $result=mysqli_query($conn,$sql) or die("Query Unsuccessfull.". mysqli_error());
+                       if(mysqli_num_rows($result) > 0)
+                       {
+                         ?>
+                       <table class="table">
+                         <tr style="background-color:#343434;color:white;">
+                             <th>Appointment ID</th>
+                             <th>Patient ID</th>
+                             <th>Patient Name</th>
+                             <th>Doctor Name</th>
+                             <th>Date of Appointment</th>
+                             <th>Appointent Status</th>
+                             <th>Action</th>
+                         </tr>
+                         <?php
+                               while($row = mysqli_fetch_assoc($result) )
+                               {
+                          ?>
+                                 <tr >
+                                       <td>   <?php echo $row['aid']; ?>        </td>
+                                       <td>   <?php echo $row['pid']; ?>      </td>
+                                       <td>   <?php echo $row['pname']; ?>       </td>
+                                       <td>   <?php echo $row['dname']; ?>    </td>
+                                       <td>   <?php echo $row['adate']; ?>    </td>
+                                       <?php
+                                       if($row['Status']=="No")
+                                       {?>
+                                         <td>   <?php echo "Patient Missed Appointment"; ?>    </td>
+                                         <td style="text-align:center;">
+                                                <a href="check.php?id=<?php echo $row['aid']; ?>">Check</a>
+                                         </td>
+                                        <?php
+                                       }
+                                       else {?>
+                                         <td>   <?php echo "Checked"; ?>    </td>
+                                         <td style="text-align:center;">
+                                                <a href="view.php?id=<?php echo $row['aid']; ?>">View</a>
+                                         </td>
+                                         <?php
+                                       }
+                                        ?>
+                                 </tr>
+                        <?php
+                      }?>
+               </table>
+               <?php
+               $pr_query="SELECT * FROM appointment WHERE (did='$dval' AND adate<'$adval') ";
+               $pr_result=mysqli_query($conn,$pr_query);
+               $total_record=mysqli_num_rows($pr_result);
+
+               $total_page=ceil($total_record/$num_per_page);
+               ?>
+               <center>
+                 <?php
+                 if($pag>1)
+                 {
+                      echo " <a href='appcom.php?pag=".($pag-1)."' class='btn btn-danger'>Previous</a> ";
+                 }
+                 for($i=1;$i<$total_page;$i++)
+                 {
+                       echo " <a href='appcom.php?pag=".$i."' class='btn btn-primary'>$i</a> ";
+                 }
+                 if($i>$pag)
+                 {
+                      echo " <a href='appcom.php?pag=".($pag+1)."' class='btn btn-danger'>Next</a> ";
+                 }
+                 ?>
+               </center>
+         <?php
+         mysqli_close($conn);
+       }
+     }
+             ?>
+             <script type="text/javascript">
+               if(window.history.replaceState){
+                 window.history.replaceState(null,null,window.location.href)
+               }
+             </script>
+         </div>
+
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
