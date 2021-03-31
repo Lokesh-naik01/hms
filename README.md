@@ -1,4 +1,6 @@
 # hms
+Install Xampp
+Place the folder in htdocs
 Create database hospital import hospital.sql file
 Admin Login Page
 http://localhost/lokesh/
