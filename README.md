@@ -1,5 +1,5 @@
 # hms
-Hospital Management system using PHP and MySQL.
+# Hospital Management system using PHP and MySQL.
 
 
 
