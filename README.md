@@ -9,7 +9,7 @@ Admin can add patients and doctors. When a doctor is added in the system a seper
 
 
 
-
+# Installation
 Install Xampp
 
 
@@ -22,6 +22,7 @@ Place the folder in htdocs
 Create database hospital import hospital.sql file
 
 
+# Admin Login
 
 Admin Login Page
 
@@ -39,7 +40,7 @@ password-admin
 
 
 
-
+# Doctor Login
 Doctor Login Page
 
 
